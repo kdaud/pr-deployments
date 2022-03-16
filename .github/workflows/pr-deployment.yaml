@@ -15,7 +15,7 @@ jobs:
           trigger: "/deploy"
           reaction: rocket
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
     outputs:
       triggered: ${{ steps.check.outputs.triggered }}
 
@@ -32,7 +32,7 @@ jobs:
           repository: ${{ github.repository }}
           issue_id: ${{ github.event.issue.number }}
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
 
       - name: create deployment
         id: create_deployment
@@ -44,7 +44,7 @@ jobs:
           environment: dev
           auto_merge: false
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
 
       - name: set deployment status to in progress
         id: start_deployment
@@ -54,12 +54,12 @@ jobs:
           repository: ${{ github.repository }}
           deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
           environment: dev
-          environment_url: https://example.com
+          environment_url: https://qa-refapp.openmrs.org/openmrs
           log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           state: in_progress
           mediaType: '{"previews": ["flash", "ant-man"]}'
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
 
       - name: deploy the pull request
         run: |
@@ -77,12 +77,12 @@ jobs:
           repository: ${{ github.repository }}
           deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
           environment: dev
-          environment_url: https://example.com
+          environment_url: https://qa-refapp.openmrs.org/openmrs
           log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           mediaType: '{"previews": ["ant-man"]}'
           state: success
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
 
       - name: set deployment status to failure
         id: failed_deployment
@@ -93,9 +93,9 @@ jobs:
           repository: ${{ github.repository }}
           deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
           environment: dev
-          environment_url: https://example.com
+          environment_url: https://qa-refapp.openmrs.org/openmrs
           log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           mediaType: '{"previews": ["ant-man"]}'
           state: failure
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
