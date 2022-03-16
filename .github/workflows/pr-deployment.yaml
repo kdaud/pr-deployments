@@ -12,8 +12,8 @@ jobs:
         id: check
         uses: khan/pull-request-comment-trigger@master
         with:
-          trigger: "/deploy"
-          reaction: rocket
+          trigger: "Deploy"
+          reaction: fireworks
         env:
           GITHUB_TOKEN: "${{ secrets.DEPLOYMENT_TOKEN }}"
     outputs:
